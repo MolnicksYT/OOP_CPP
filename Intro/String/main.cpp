@@ -25,30 +25,30 @@ public:
 		return size;
 	}
 	//constructors
-	String(int size = 80)
+	String(int size = 80) :size(size), str(new char[size] {})
 	{
-		this->size = size;
-		this->str = new char[size] {};
+		//this->size = size;
+		//this->str = new char[size] {};
 		cout << "DefaultConstructor:\t" << this << endl;
 	}
-	String(const char* str)
+	String(const char* str):String(strlen(str)+1)
 	{
-		this->size = strlen(str) + 1;
-		this->str = new char[size] {};
+		//this->size = strlen(str) + 1;
+		//this->str = new char[size] {};
 		strcpy(this->str, str);
 		cout << (size==80?"Default":"Size") << "constructor:\t\t" << this << endl;
 	}
-	String(const String& other)
+	String(const String& other) :String(other.str)
 	{
-		this->size = other.size;
-		this->str = new char[size] {};
-		strcpy(this->str, other.str);
+		//this->size = other.size;
+		//this->str = new char[size] {};
+		//strcpy(this->str, other.str);
 		cout << "CopyConstructor:\t" << this << endl;
 	}
-	String(String&& other)
+	String(String&& other):size(other.size),str(other.str)
 	{
-		this->size = other.size;
-		this -> str = other.str;
+		//this->size = other.size;
+		//this -> str = other.str;
 		other.str = nullptr;
 		cout << "Moveconstructor:\t" << this << endl;
 	}
