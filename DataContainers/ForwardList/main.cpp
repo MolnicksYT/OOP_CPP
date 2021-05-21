@@ -7,90 +7,107 @@ using std::endl;
 #define delimetr "\n----------------------------------------\n"
 //#define CONSTRUCTOR
 //#define DESTRUCTOR
+
+class ForwardList;
+
 class Element
 {
 	int Data;		// значение элемента
 	Element* pNext; // указатель на следующий элемент (pointer to next)
 	static int count;
 public:
-	const Element* getpNext()const
-	{
-		return pNext;
-	}
-	int getData()const
-	{
-		return Data;
-	}
-	Element(int Data, Element* pNext = nullptr) : Data(Data), pNext(pNext)
-	{
-		count++;
-#ifdef CONSTRUCTOR
-		cout << "EConstructor:\t" << this << endl;
-
-#endif // CONSTRUCTOR
-	}
-	~Element()
-	{
-		count--;
-#ifdef DESTRUCTOR
-		cout << "EDestructor:\t" << this << endl;
-#endif // DESTRUCTOR
-
-	}
+	const Element* getpNext()const;
+	int getData()const;
+	Element(int Data, Element* pNext = nullptr);
+	~Element();
 	friend class Iterator;
 	friend class ForwardList;
 	friend ForwardList operator+(const ForwardList& left, const ForwardList& right);
 };
 int Element::count = 0; // инициализация статической переменной
+const Element* Element::getpNext()const
+{
+	return pNext;
+}
+int Element::getData()const
+{
+	return Data;
+}
+Element::Element(int Data, Element* pNext) : Data(Data), pNext(pNext)
+{
+	count++;
+#ifdef CONSTRUCTOR
+	cout << "EConstructor:\t" << this << endl;
+
+#endif // CONSTRUCTOR
+}
+Element::~Element()
+{
+	count--;
+#ifdef DESTRUCTOR
+	cout << "EDestructor:\t" << this << endl;
+#endif // DESTRUCTOR
+}
 class Iterator
 {
 	Element* Temp;
 public:
-	Iterator(Element* Temp = nullptr) :Temp(Temp)
-	{
-		cout << "IConstructor:\t" << this << endl;
-	}
-	~Iterator()
-	{
-		cout << "IDestructor:\t" << this << endl;
-	}
+	Iterator(Element* Temp = nullptr);
+	~Iterator();
 	//operators
-	Iterator& operator++()
-	{
-		Temp = Temp->pNext;
-		return *this;
-	}
-	Iterator operator++(int)
-	{
-		Iterator old = *this;
-		Temp = Temp->pNext;
-		return old;
-	}
-	bool operator==(const Iterator& other)const
-	{
-		return this->Temp == other.Temp;
-	}
-	bool operator!=(const Iterator& other)const
-	{
-		return this->Temp != other.Temp;
-	}
-	const int& operator*()const
-	{
-		return Temp->Data;
-	}
-	int& operator*()
-	{
-		return Temp->Data;
-	}
-	Element* operator->()const
-	{
-		return Temp;
-	}
-	Element* operator->()
-	{
-		return Temp;
-	}
+	Iterator& operator++();
+	Iterator operator++(int);
+	bool operator==(const Iterator& other)const;
+	bool operator!=(const Iterator& other)const;
+	const int& operator*()const;
+	int& operator*();
+	Element* operator->()const;
+	Element* operator->();
 };
+Iterator::Iterator(Element* Temp):Temp(Temp)
+{
+	cout << "IConstructor:\t" << this << endl;
+}
+Iterator::~Iterator()
+{
+	cout << "IDestructor:\t" << this << endl;
+}
+//operators
+Iterator& Iterator::operator++()
+{
+	Temp = Temp->pNext;
+	return *this;
+}
+Iterator Iterator::operator++(int)
+{
+	Iterator old = *this;
+	Temp = Temp->pNext;
+	return old;
+}
+bool Iterator::operator==(const Iterator& other)const
+{
+	return this->Temp == other.Temp;
+}
+bool Iterator::operator!=(const Iterator& other)const
+{
+	return this->Temp != other.Temp;
+}
+const int& Iterator::operator*()const
+{
+	return Temp->Data;
+}
+int& Iterator::operator*()
+{
+	return Temp->Data;
+}
+Element* Iterator::operator->()const
+{
+	return Temp;
+}
+Element* Iterator::operator->()
+{
+	return Temp;
+}
 class ForwardList
 {
 	unsigned int size;
